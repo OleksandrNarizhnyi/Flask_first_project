@@ -67,8 +67,8 @@ class Category(Base):
     )
 
     products: Mapped[list["Product"]] = relationship(
-        "Product",
-        back_populates="category"
+         "Product",
+         back_populates="category"
     )
 
 Base.metadata.create_all(bind=engine)
