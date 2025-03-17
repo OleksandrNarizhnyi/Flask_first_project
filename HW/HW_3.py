@@ -16,6 +16,7 @@ from sqlalchemy import create_engine, Integer, String, ForeignKey, Numeric, Bool
 from sqlalchemy.orm import sessionmaker, declarative_base, Mapped, mapped_column, relationship
 import logging
 # Настройка базового логирования
+# Взял пример с лекции ради интереса))
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('sqlalchemy.engine')
 # Включение логирования SQL-запросов
