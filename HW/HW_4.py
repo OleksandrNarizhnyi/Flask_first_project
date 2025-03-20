@@ -85,8 +85,21 @@ Session = sessionmaker(bind=engine)
 #             print(f" Product name: {product.name}, price: {product.price}, available: {product.in_stock}")
 #===========================================================================================================
 # 3. Обновление данных
+# with Session() as session:
+#     update_first_in_product = session.query(Product).filter().first()
+#     if update_first_in_product:
+#         update_first_in_product.price = 349.99
+#         session.commit()
+#=================================================================================================================
+# 4. Агрегация и группировка
+# Используя агрегирующие функции и группировку, подсчитайте общее количество продуктов в каждой
+# категории.
 with Session() as session:
-    update_first_in_product = session.query(Product).filter().first()
-    if update_first_in_product:
-        update_first_in_product.price = 349.99
-        session.commit()
+    from sqlalchemy import func
+    count_prod_in_category = session.query(
+        Category.name,
+        func.count(Product.id).label("count_prod")
+    ).join(Product).group_by(Category.id).all()
+
+    for count in count_prod_in_category:
+        print(f"Category: {count.name} - count of product: {count.count_prod}")
