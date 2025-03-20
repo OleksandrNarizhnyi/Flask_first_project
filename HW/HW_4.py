@@ -76,10 +76,17 @@ Session = sessionmaker(bind=engine)
 #====================================================================================================
 # 2. Извлеките все записи из таблицы categories. Для каждой категории извлеките и выведите все связанные с
 # ней продукты, включая их названия и цены.
+# with Session() as session:
+#     all_from_category = session.query(Category).all()
+#
+#     for cat in all_from_category:
+#         print(f"Категория: {cat.name}, Описание: {cat.description}")
+#         for product in cat.products:
+#             print(f" Product name: {product.name}, price: {product.price}, available: {product.in_stock}")
+#===========================================================================================================
+# 3. Обновление данных
 with Session() as session:
-    all_from_category = session.query(Category).all()
-
-    for cat in all_from_category:
-        print(f"Категория: {cat.name}, Описание: {cat.description}")
-        for product in cat.products:
-            print(f" Product name: {product.name}, price: {product.price}, available: {product.in_stock}")
+    update_first_in_product = session.query(Product).filter().first()
+    if update_first_in_product:
+        update_first_in_product.price = 349.99
+        session.commit()
