@@ -94,12 +94,25 @@ Session = sessionmaker(bind=engine)
 # 4. Агрегация и группировка
 # Используя агрегирующие функции и группировку, подсчитайте общее количество продуктов в каждой
 # категории.
+# with Session() as session:
+#     from sqlalchemy import func
+#     count_prod_in_category = session.query(
+#         Category.name,
+#         func.count(Product.id).label("count_prod")
+#     ).join(Product).group_by(Category.id).all()
+#
+#     for count in count_prod_in_category:
+#         print(f"Category: {count.name} - count of product: {count.count_prod}")
+#===================================================================================================================
+# е 5. Группировка с фильтрацией
+# Отфильтруйте и выведите только те категории, в которых более одного продукта.
 with Session() as session:
     from sqlalchemy import func
-    count_prod_in_category = session.query(
-        Category.name,
-        func.count(Product.id).label("count_prod")
-    ).join(Product).group_by(Category.id).all()
+    #count_prod = session.query(func.count(Product.id)).scalar()
 
-    for count in count_prod_in_category:
-        print(f"Category: {count.name} - count of product: {count.count_prod}")
+    category_with_more_then_one_prod = session.query(
+        Category.name
+    ).join(Product).group_by(Category.id).having(func.count(Product.id) > 1).all()
+
+    for cat in category_with_more_then_one_prod:
+        print(f"Category with more then one product: {cat.name}")
